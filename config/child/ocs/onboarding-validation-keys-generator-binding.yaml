@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: onboarding-validation-keys-generator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: onboarding-validation-keys-generator
+subjects:
+- kind: ServiceAccount
+  name: onboarding-validation-keys-generator
+  namespace: openshift-storage

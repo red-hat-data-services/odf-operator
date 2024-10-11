@@ -1,0 +1,4770 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "odf.openshift.io/v1alpha1",
+          "kind": "StorageSystem",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/name": "odf-operator"
+            },
+            "name": "storagesystem-sample"
+          },
+          "spec": null
+        }
+      ]
+    capabilities: Deep Insights
+    categories: Storage
+    console.openshift.io/plugins: '["odf-console"]'
+    containerImage: quay.io/ocs-dev/odf-operator:latest
+    createdAt: "2024-09-10T09:20:04Z"
+    description: OpenShift Data Foundation provides a common control plane for storage
+      solutions on OpenShift Container Platform.
+    features.operators.openshift.io/token-auth-aws: "true"
+    operatorframework.io/initialization-resource: |-
+      {
+        "apiVersion": "odf.openshift.io/v1alpha1",
+        "kind": "StorageSystem",
+        "metadata": {
+          "name": "ocs-storagecluster-storagesystem",
+          "namespace": "openshift-storage"
+        },
+        "spec": {
+          "kind": "storagecluster.ocs.openshift.io/v1",
+          "name": "ocs-storagecluster",
+          "namespace": "openshift-storage"
+        }
+      }
+    operatorframework.io/suggested-namespace: openshift-storage
+    operators.openshift.io/infrastructure-features: '["disconnected"]'
+    operators.openshift.io/valid-subscription: '["OpenShift Platform Plus","OpenShift
+      Data Foundation Essentials","OpenShift Data Foundation Advanced"]'
+    operators.operatorframework.io/builder: operator-sdk-v1.36.1
+    operators.operatorframework.io/internal-objects: '["csiaddonsnodes.csiaddons.openshift.io","encryptionkeyrotationcronjobs.csiaddons.openshift.io","encryptionkeyrotationjobs.csiaddons.openshift.io","networkfences.csiaddons.openshift.io","reclaimspacecronjobs.csiaddons.openshift.io","reclaimspacejobs.csiaddons.openshift.io","volumegroupreplicationclasses.replication.storage.openshift.io","volumegroupreplicationcontents.replication.storage.openshift.io","volumegroupreplications.replication.storage.openshift.io","volumereplicationclasses.replication.storage.openshift.io","volumereplications.replication.storage.openshift.io","storageclaims.ocs.openshift.io","storageclients.ocs.openshift.io","ocsinitializations.ocs.openshift.io","storageclusterpeers.ocs.openshift.io","storageclusters.ocs.openshift.io","storageconsumers.ocs.openshift.io","storageprofiles.ocs.openshift.io","storagerequests.ocs.openshift.io","cephconnections.csi.ceph.io","clientprofilemappings.csi.ceph.io","clientprofiles.csi.ceph.io","drivers.csi.ceph.io","operatorconfigs.csi.ceph.io","noobaas.noobaa.io","backingstores.noobaa.io","namespacestores.noobaa.io","bucketclasses.noobaa.io","noobaaaccounts.noobaa.io","objectbucketclaims.objectbucket.io","objectbuckets.objectbucket.io","cephclusters.ceph.rook.io","cephblockpools.ceph.rook.io","cephobjectstores.ceph.rook.io","cephobjectstoreusers.ceph.rook.io","cephnfses.ceph.rook.io","cephclients.ceph.rook.io","cephfilesystems.ceph.rook.io","cephfilesystemmirrors.ceph.rook.io","cephrbdmirrors.ceph.rook.io","cephobjectrealms.ceph.rook.io","cephobjectzonegroups.ceph.rook.io","cephobjectzones.ceph.rook.io","cephbucketnotifications.ceph.rook.io","cephbuckettopics.ceph.rook.io","cephfilesystemsubvolumegroups.ceph.rook.io","cephblockpoolradosnamespaces.ceph.rook.io","cephcosidrivers.ceph.rook.io","recipes.ramendr.openshift.io"]'
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+    repository: https://github.com/red-hat-storage/odf-operator
+    support: Red Hat
+    vendors.odf.openshift.io/kind: '["storagecluster.ocs.openshift.io/v1", "flashsystemcluster.odf.ibm.com/v1alpha1"]'
+  creationTimestamp: null
+  labels:
+    operatorframework.io/arch.amd64: supported
+    operatorframework.io/arch.ppc64le: supported
+    operatorframework.io/arch.s390x: supported
+  name: odf-operator.v0.0.1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  cleanup:
+    enabled: false
+  customresourcedefinitions:
+    owned:
+    - description: StorageSystem is the Schema for the storagesystems API
+      displayName: Storage System
+      kind: StorageSystem
+      name: storagesystems.odf.openshift.io
+      resources:
+      - kind: FlashSystemCluster
+        name: flashsystemclusters.odf.ibm.com
+        version: v1alpha1
+      - kind: StorageCluster
+        name: storageclusters.ocs.openshift.io
+        version: v1
+      version: v1alpha1
+    - description: CSIAddonsNode is the Schema for the csiaddonsnode API
+      displayName: CSIAddons Node
+      kind: CSIAddonsNode
+      name: csiaddonsnodes.csiaddons.openshift.io
+      version: v1alpha1
+    - kind: EncryptionKeyRotationCronJob
+      name: encryptionkeyrotationcronjobs.csiaddons.openshift.io
+      version: v1alpha1
+    - kind: EncryptionKeyRotationJob
+      name: encryptionkeyrotationjobs.csiaddons.openshift.io
+      version: v1alpha1
+    - description: NetworkFence is the Schema for the networkfences API
+      displayName: Network Fence
+      kind: NetworkFence
+      name: networkfences.csiaddons.openshift.io
+      version: v1alpha1
+    - description: ReclaimSpaceCronJob is the Schema for the reclaimspacecronjobs
+        API
+      displayName: Reclaim Space CronJob
+      kind: ReclaimSpaceCronJob
+      name: reclaimspacecronjobs.csiaddons.openshift.io
+      version: v1alpha1
+    - description: ReclaimSpaceJob is the Schema for the reclaimspacejobs API
+      displayName: Reclaim Space Job
+      kind: ReclaimSpaceJob
+      name: reclaimspacejobs.csiaddons.openshift.io
+      version: v1alpha1
+    - kind: VolumeGroupReplicationClass
+      name: volumegroupreplicationclasses.replication.storage.openshift.io
+      version: v1alpha1
+    - kind: VolumeGroupReplicationContent
+      name: volumegroupreplicationcontents.replication.storage.openshift.io
+      version: v1alpha1
+    - kind: VolumeGroupReplication
+      name: volumegroupreplications.replication.storage.openshift.io
+      version: v1alpha1
+    - description: VolumeReplicationClass is the Schema for the volumereplicationclasses
+        API
+      displayName: Volume Replication Class
+      kind: VolumeReplicationClass
+      name: volumereplicationclasses.replication.storage.openshift.io
+      version: v1alpha1
+    - description: VolumeReplication is the Schema for the volumereplications API
+      displayName: Volume Replication
+      kind: VolumeReplication
+      name: volumereplications.replication.storage.openshift.io
+      version: v1alpha1
+    - description: StorageClaim is the Schema for the storageclaims API
+      displayName: Storage Claim
+      kind: StorageClaim
+      name: storageclaims.ocs.openshift.io
+      version: v1alpha1
+    - description: StorageClient is the Schema for the storageclients API
+      displayName: Storage Client
+      kind: StorageClient
+      name: storageclients.ocs.openshift.io
+      version: v1alpha1
+    - description: OCSInitialization represents the initial data to be created when
+        the operator is installed.
+      displayName: OCS Initialization
+      kind: OCSInitialization
+      name: ocsinitializations.ocs.openshift.io
+      version: v1
+    - description: StorageClusterPeer is the Schema for the storageclusterpeers API
+      displayName: Storage Cluster Peer
+      kind: StorageClusterPeer
+      name: storageclusterpeers.ocs.openshift.io
+      version: v1
+    - description: StorageCluster represents a cluster including Ceph Cluster, NooBaa
+        and all the storage and compute resources required.
+      displayName: Storage Cluster
+      kind: StorageCluster
+      name: storageclusters.ocs.openshift.io
+      resources:
+      - kind: CephCluster
+        name: cephclusters.ceph.rook.io
+        version: v1
+      - kind: NooBaa
+        name: noobaas.noobaa.io
+        version: v1alpha1
+      version: v1
+    - description: StorageConsumer is the Schema for the storageconsumers API
+      displayName: Storage Consumer
+      kind: StorageConsumer
+      name: storageconsumers.ocs.openshift.io
+      version: v1alpha1
+    - description: StorageProfile is the Schema for the storageprofiles API
+      displayName: Storage Profile
+      kind: StorageProfile
+      name: storageprofiles.ocs.openshift.io
+      version: v1
+    - description: StorageRequest is the Schema for the StorageRequests API
+      displayName: Storage Request
+      kind: StorageRequest
+      name: storagerequests.ocs.openshift.io
+      version: v1alpha1
+    - kind: CephConnection
+      name: cephconnections.csi.ceph.io
+      version: v1alpha1
+    - kind: ClientProfileMapping
+      name: clientprofilemappings.csi.ceph.io
+      version: v1alpha1
+    - kind: ClientProfile
+      name: clientprofiles.csi.ceph.io
+      version: v1alpha1
+    - kind: Driver
+      name: drivers.csi.ceph.io
+      version: v1alpha1
+    - kind: OperatorConfig
+      name: operatorconfigs.csi.ceph.io
+      version: v1alpha1
+    - description: A NooBaa system - Create this to start
+      displayName: NooBaa
+      kind: NooBaa
+      name: noobaas.noobaa.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      specDescriptors:
+      - description: DBImage (optional) overrides the default image for the db container.
+        displayName: DB Image
+        path: image
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Image (optional) overrides the default image for the server container.
+        displayName: Image
+        path: dbImage
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: CoreResources (optional) overrides the default resource requirements
+          for the server container.
+        displayName: Core Resources
+        path: coreResources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - description: DBResources (optional) overrides the default resource requirements
+          for the db container.
+        displayName: DB Resources
+        path: dbResources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - description: 'DBVolumeResources (optional) overrides the default PVC resource
+          requirements for the database volume. For the time being this field is immutable
+          and can only be set on system creation. This is because volume size updates
+          are only supported for increasing the size, and only if the storage class
+          specifies `allowVolumeExpansion: true`, +immutable.'
+        displayName: Image
+        path: dbVolumeResources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - description: DBStorageClass (optional) overrides the default cluster StorageClass
+          for the database volume. For the time being this field is immutable and
+          can only be set on system creation. This affects where the system stores
+          its database which contains system config, buckets, objects meta-data and
+          mapping file parts to storage locations. +immutable.
+        displayName: DB StorageClass
+        path: dbStorageClass
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: PVPoolDefaultStorageClass (optional) overrides the default cluster
+          StorageClass for the pv-pool volumes. This affects where the system stores
+          data chunks (encrypted). Updates to this field will only affect new pv-pools,
+          but updates to existing pools are not supported by the operator.
+        displayName: PV Pool DefaultStorageClass
+        path: pvPoolDefaultStorageClass
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: ImagePullSecret (optional) sets a pull secret for the system
+          image.
+        displayName: Image Pull Secret
+        path: imagePullSecret
+        x-descriptors:
+        - urn:alm:descriptor:io.kubernetes:Secret
+      version: v1alpha1
+    - description: Storage target spec such as aws-s3, s3-compatible, ibm-cos, PV's
+        and more. Used in BucketClass to construct data placement policies.
+      displayName: Backing Store
+      kind: BackingStore
+      name: backingstores.noobaa.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      specDescriptors:
+      - description: Region is the AWS region.
+        displayName: Region
+        path: awsS3.region
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: awsS3.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SSLDisabled allows to disable SSL and use plain http.
+        displayName: SSL Disabled
+        path: awsS3.sslDisabled
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:booleanSwitch
+      - description: TargetBucket is the name of the target S3 bucket.
+        displayName: Target Bucket
+        path: awsS3.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: |2-
+           Secret refers to a secret that provides the credentials. The secret should define AccountName and AccountKey as provided
+          by Azure Blob.
+        displayName: Secret
+        path: azureBlob.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:azureBlob
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: TargetBlobContainer is the name of the target Azure Blob container.
+        displayName: Target Blob Container
+        path: azureBlob.targetBlobContainer
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:azureBlob
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: |-
+          Secret refers to a secret that provides the credentials. The secret should define GoogleServiceAccountPrivateKeyJson containing
+          the entire json string as provided by Google.
+        displayName: Secret
+        path: googleCloudStorage.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:googleCloudStorage
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: TargetBucket is the name of the target S3 bucket.
+        displayName: Target Bucket
+        path: googleCloudStorage.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:googleCloudStorage
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: NumVolumes is the number of volumes to allocate.
+        displayName: Num Volumes
+        path: pvPool.numVolumes
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:pvPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: VolumeResources represents the minimum resources each volume
+          should have.
+        displayName: Resources
+        path: pvPool.resources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:pvPool
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - description: StorageClass is the name of the storage class to use for the
+          PV's.
+        displayName: Storage Class
+        path: pvPool.storageClass
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:pvPool
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: 'Endpoint is the S3 compatible endpoint: http(s)://host:port.'
+        displayName: End Point
+        path: s3Compatible.endpoint
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: s3Compatible.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SignatureVersion specifies the client signature version to use
+          when signing requests.
+        displayName: Signature Version
+        path: s3Compatible.signatureVersion
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: TargetBucket is the name of the target S3 bucket.
+        displayName: Target Bucket
+        path: s3Compatible.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: 'Endpoint is the IBM COS endpoint: http(s)://host:port.'
+        displayName: End Point
+        path: IBMCos.endpoint
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define IBM_COS_ACCESS_KEY_ID and IBM_COS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: IBMCos.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SignatureVersion specifies the client signature version to use
+          when signing requests.
+        displayName: Signature Version
+        path: IBMCos.signatureVersion
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: TargetBucket is the name of the target IBM COS bucket.
+        displayName: Target Bucket
+        path: IBMCos.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:text
+      version: v1alpha1
+    - description: Storage target spec such as aws-s3, s3-compatible, ibm-cos and
+        more. Used in BucketClass to construct namespace policies.
+      displayName: Namespace Store
+      kind: NamespaceStore
+      name: namespacestores.noobaa.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      specDescriptors:
+      - description: Region is the AWS region.
+        displayName: Region
+        path: awsS3.region
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: awsS3.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SSLDisabled allows to disable SSL and use plain http.
+        displayName: SSL Disabled
+        path: awsS3.sslDisabled
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:booleanSwitch
+      - description: TargetBucket is the name of the target S3 bucket.
+        displayName: Target Bucket
+        path: awsS3.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:awsS3
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: |2-
+           Secret refers to a secret that provides the credentials. The secret should define AccountName and AccountKey as provided
+          by Azure Blob.
+        displayName: Secret
+        path: azureBlob.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:azureBlob
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: TargetBlobContainer is the name of the target Azure Blob container.
+        displayName: Target Blob Container
+        path: azureBlob.targetBlobContainer
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:azureBlob
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: 'Endpoint is the S3 compatible endpoint: http(s)://host:port.'
+        displayName: End Point
+        path: s3Compatible.endpoint
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: s3Compatible.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SignatureVersion specifies the client signature version to use
+          when signing requests.
+        displayName: Signature Version
+        path: s3Compatible.signatureVersion
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: TargetBucket is the name of the target S3 bucket.
+        displayName: Target Bucket
+        path: s3Compatible.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:s3Compatible
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: 'Endpoint is the IBM COS endpoint: http(s)://host:port.'
+        displayName: End Point
+        path: IBMCos.endpoint
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Secret refers to a secret that provides the credentials. The
+          secret should define IBM_COS_ACCESS_KEY_ID and IBM_COS_SECRET_ACCESS_KEY.
+        displayName: Secret
+        path: IBMCos.secret.name
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:io.kubernetes:Secret
+      - description: SignatureVersion specifies the client signature version to use
+          when signing requests.
+        displayName: Signature Version
+        path: IBMCos.signatureVersion
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: TargetBucket is the name of the target IBM COS bucket.
+        displayName: Target Bucket
+        path: IBMCos.targetBucket
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:ibmCos
+        - urn:alm:descriptor:com.tectonic.ui:text
+      version: v1alpha1
+    - description: Storage policy spec  tiering, mirroring, spreading, namespace policy.
+        Combines BackingStores Or NamespaceStores. Referenced by ObjectBucketClaims.
+      displayName: Bucket Class
+      kind: BucketClass
+      name: bucketclasses.noobaa.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      specDescriptors:
+      - description: BackingStores is an unordered list of backing store names. The
+          meaning of the list depends on the placement.
+        displayName: Backing Stores
+        path: placementPolicy.tiers[0].backingStores[0]
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:placementPolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Placement specifies the type of placement for the tier If empty
+          it should have a single backing store.
+        displayName: Placement
+        path: placementPolicy.tiers[0].placement
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:placementPolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Namespace Policy type specifies the type of the namespace policy
+          configuration.
+        displayName: Namespace Policy
+        path: namespacePolicy.type
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:namespacePolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Resource specifies the namespace store configured by the bucket
+          class to be read and write targets.
+        displayName: Resource
+        path: namespacePolicy.single.resource
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:namespacePolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Read Resources specifies the namespace stores configured by the
+          bucket class to be read targets.
+        displayName: Read Resources
+        path: namespacePolicy.Multi.readResources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:namespacePolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Write Resource specifies the namespace store configured by the
+          bucket class to be write target.
+        displayName: Write Resource
+        path: namespacePolicy.Multi.writeResource
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:namespacePolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Hub Resource specifies the target namespace store configured
+          by the bucket class to be read and write targets.
+        displayName: Hub Resource
+        path: namespacePolicy.Cache.hubResource
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:namespacePolicy
+        - urn:alm:descriptor:com.tectonic.ui:text
+      version: v1alpha1
+    - kind: NooBaaAccount
+      name: noobaaaccounts.noobaa.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      version: v1alpha1
+    - description: Claim a bucket just like claiming a PV. Automate you app bucket
+        provisioning by creating OBC with your app deployment. A secret and configmap
+        (name=claim) will be created with access details for the app pods.
+      displayName: Object Bucket Claim
+      kind: ObjectBucketClaim
+      name: objectbucketclaims.objectbucket.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      version: v1alpha1
+    - description: Used under-the-hood. Created per ObjectBucketClaim and keeps provisioning
+        information.
+      displayName: Object Bucket
+      kind: ObjectBucket
+      name: objectbuckets.objectbucket.io
+      resources:
+      - kind: Service
+        name: services
+        version: v1
+      - kind: Secret
+        name: secrets
+        version: v1
+      - kind: ConfigMap
+        name: configmaps
+        version: v1
+      - kind: StatefulSet
+        name: statefulsets.apps
+        version: v1
+      version: v1alpha1
+    - description: Represents a Ceph cluster.
+      displayName: Ceph Cluster
+      kind: CephCluster
+      name: cephclusters.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Block Pool.
+      displayName: Ceph Block Pool
+      kind: CephBlockPool
+      name: cephblockpools.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Object Store.
+      displayName: Ceph Object Store
+      kind: CephObjectStore
+      name: cephobjectstores.ceph.rook.io
+      specDescriptors:
+      - description: Coding Chunks
+        displayName: Coding Chunks
+        path: dataPool.erasureCoded.codingChunks
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:dataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Data Chunks
+        displayName: Data Chunks
+        path: dataPool.erasureCoded.dataChunks
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:dataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: failureDomain
+        displayName: failureDomain
+        path: dataPool.failureDomain
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:dataPool
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Size
+        displayName: Size
+        path: dataPool.replicated.size
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:dataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Annotations
+        displayName: Annotations
+        path: gateway.annotations
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:io.kubernetes:annotations
+      - description: Instances
+        displayName: Instances
+        path: gateway.instances
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Resources
+        displayName: Resources
+        path: gateway.resources
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - description: placement
+        displayName: placement
+        path: gateway.placement
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:io.kubernetes:placement
+      - description: securePort
+        displayName: securePort
+        path: gateway.securePort
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:io.kubernetes:securePort
+      - description: sslCertificateRef
+        displayName: sslCertificateRef
+        path: gateway.sslCertificateRef
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:io.kubernetes:sslCertificateRef
+      - description: Type
+        displayName: Type
+        path: gateway.type
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:gateway
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Coding Chunks
+        displayName: Coding Chunks
+        path: metadataPool.erasureCoded.codingChunks
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:metadataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: Data Chunks
+        displayName: Data Chunks
+        path: metadataPool.erasureCoded.dataChunks
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:metadataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      - description: failureDomain
+        displayName: failureDomain
+        path: metadataPool.failureDomain
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:metadataPool
+        - urn:alm:descriptor:com.tectonic.ui:text
+      - description: Size
+        displayName: Size
+        path: metadataPool.replicated.size
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:fieldGroup:metadataPool
+        - urn:alm:descriptor:com.tectonic.ui:number
+      version: v1
+    - description: Represents a Ceph Object Store User.
+      displayName: Ceph Object Store User
+      kind: CephObjectStoreUser
+      name: cephobjectstoreusers.ceph.rook.io
+      version: v1
+    - description: Represents a cluster of Ceph NFS ganesha gateways.
+      displayName: Ceph NFS
+      kind: CephNFS
+      name: cephnfses.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph User.
+      displayName: Ceph Client
+      kind: CephClient
+      name: cephclients.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Filesystem.
+      displayName: Ceph Filesystem
+      kind: CephFilesystem
+      name: cephfilesystems.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Filesystem Mirror.
+      displayName: Ceph Filesystem Mirror
+      kind: CephFilesystemMirror
+      name: cephfilesystemmirrors.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph RBD Mirror.
+      displayName: Ceph RBD Mirror
+      kind: CephRBDMirror
+      name: cephrbdmirrors.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Object Store Realm.
+      displayName: Ceph Object Store Realm
+      kind: CephObjectRealm
+      name: cephobjectrealms.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Object Store Zone Group.
+      displayName: Ceph Object Store Zone Group
+      kind: CephObjectZoneGroup
+      name: cephobjectzonegroups.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Object Store Zone.
+      displayName: Ceph Object Store Zone
+      kind: CephObjectZone
+      name: cephobjectzones.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Bucket Notification.
+      displayName: Ceph Bucket Notification
+      kind: CephBucketNotification
+      name: cephbucketnotifications.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Bucket Topic.
+      displayName: Ceph Bucket Topic
+      kind: CephBucketTopic
+      name: cephbuckettopics.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph Filesystem SubVolumeGroup.
+      displayName: Ceph Filesystem SubVolumeGroup
+      kind: CephFilesystemSubVolumeGroup
+      name: cephfilesystemsubvolumegroups.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph BlockPool Rados Namespace.
+      displayName: Ceph BlockPool Rados Namespace
+      kind: CephBlockPoolRadosNamespace
+      name: cephblockpoolradosnamespaces.ceph.rook.io
+      version: v1
+    - description: Represents a Ceph COSI Driver.
+      displayName: Ceph COSI Driver
+      kind: CephCOSIDriver
+      name: cephcosidrivers.ceph.rook.io
+      version: v1
+    - description: Recipe is the Schema for the recipes API
+      displayName: Recipe
+      kind: Recipe
+      name: recipes.ramendr.openshift.io
+      version: v1alpha1
+  description: |
+    **Red Hat OpenShift Data Foundation** deploys three operators.
+
+    ### OpenShift Data Foundation
+    The OpenShift Data Foundation operator is the primary operator for
+    OpenShift Data Foundation. It serves to facilitate the other operators in
+    OpenShift Data Foundation by performing administrative tasks outside their
+    scope as well as watching and configuring their CustomResources.
+
+    ### Rook
+    [Rook][1] deploys and manages Ceph on OpenShift, which provides block,
+    file and object storage.
+
+    ### NooBaa operator
+    The NooBaa operator deploys and manages the [NooBaa][2] Multi-Cloud Gateway
+    on OpenShift, which provides object storage.
+
+    # Core Capabilities
+    * **Self-managing service:** No matter which supported storage technologies
+    you choose, OpenShift Data Foundation ensures that resources can be
+    deployed and managed automatically.
+
+    * **Hyper-scale or hyper-converged:** With OpenShift Data Foundation you
+    can either build dedicated storage clusters or hyper-converged clusters
+    where your apps run alongside storage.
+
+    * **File, Block, and Object provided by OpenShift Data Foundation:**
+    OpenShift Data Foundation integrates Ceph with multiple storage
+    presentations including object storage (compatible with S3), block storage,
+    and POSIX-compliant shared file system.
+
+    * **Your data, protected:** OpenShift Data Foundation efficiently
+    distributes and replicates your data across your cluster to minimize the
+    risk of data loss. With snapshots, cloning, and versioning, no more losing
+    sleep over your data.
+
+    * **Elastic storage in your datacenter:** Scale is now possible in your
+    datacenter. Get started with a few terabytes, and easily scale up.
+
+    * **Simplified data management:** Easily create hybrid and multi-cloud data
+    storage for your workloads, using a single namespace.
+
+    # Subscriptions
+    OpenShift Data Foundation requires a matching 1:1 ratio with the OpenShift
+    subscription used. The Essential subscription is included in the OpenShift
+    Platform Plus subscription. Disaster Recovery features, external mode, and
+    KMS integration for encryption at rest require a bundle of OpenShift
+    Platform Plus with OpenShift Data Foundation Advanced subscription.
+
+    [1]: https://rook.io
+    [2]: https://www.noobaa.io
+  displayName: OpenShift Data Foundation
+  icon:
+  - base64data: PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTQ1Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UwMDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPlJlZEhhdC1Mb2dvLUhhdC1Db2xvcjwvdGl0bGU+PHBhdGggZD0iTTE1Ny43Nyw2Mi42MWExNCwxNCwwLDAsMSwuMzEsMy40MmMwLDE0Ljg4LTE4LjEsMTcuNDYtMzAuNjEsMTcuNDZDNzguODMsODMuNDksNDIuNTMsNTMuMjYsNDIuNTMsNDRhNi40Myw2LjQzLDAsMCwxLC4yMi0xLjk0bC0zLjY2LDkuMDZhMTguNDUsMTguNDUsMCwwLDAtMS41MSw3LjMzYzAsMTguMTEsNDEsNDUuNDgsODcuNzQsNDUuNDgsMjAuNjksMCwzNi40My03Ljc2LDM2LjQzLTIxLjc3LDAtMS4wOCwwLTEuOTQtMS43My0xMC4xM1oiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMjcuNDcsODMuNDljMTIuNTEsMCwzMC42MS0yLjU4LDMwLjYxLTE3LjQ2YTE0LDE0LDAsMCwwLS4zMS0zLjQybC03LjQ1LTMyLjM2Yy0xLjcyLTcuMTItMy4yMy0xMC4zNS0xNS43My0xNi42QzEyNC44OSw4LjY5LDEwMy43Ni41LDk3LjUxLjUsOTEuNjkuNSw5MCw4LDgzLjA2LDhjLTYuNjgsMC0xMS42NC01LjYtMTcuODktNS42LTYsMC05LjkxLDQuMDktMTIuOTMsMTIuNSwwLDAtOC40MSwyMy43Mi05LjQ5LDI3LjE2QTYuNDMsNi40MywwLDAsMCw0Mi41Myw0NGMwLDkuMjIsMzYuMywzOS40NSw4NC45NCwzOS40NU0xNjAsNzIuMDdjMS43Myw4LjE5LDEuNzMsOS4wNSwxLjczLDEwLjEzLDAsMTQtMTUuNzQsMjEuNzctMzYuNDMsMjEuNzdDNzguNTQsMTA0LDM3LjU4LDc2LjYsMzcuNTgsNTguNDlhMTguNDUsMTguNDUsMCwwLDEsMS41MS03LjMzQzIyLjI3LDUyLC41LDU1LC41LDc0LjIyYzAsMzEuNDgsNzQuNTksNzAuMjgsMTMzLjY1LDcwLjI4LDQ1LjI4LDAsNTYuNy0yMC40OCw1Ni43LTM2LjY1LDAtMTIuNzItMTEtMjcuMTYtMzAuODMtMzUuNzgiLz48L3N2Zz4=
+    mediatype: image/svg+xml
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - odf.openshift.io
+          resources:
+          - storagesystems
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - odf.openshift.io
+          resources:
+          - storagesystems/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - odf.openshift.io
+          resources:
+          - storagesystems/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: odf-operator-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          - pods
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - patch
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          - encryptionkeyrotationcronjobs
+          - encryptionkeyrotationjobs
+          - networkfences
+          - reclaimspacecronjobs
+          - reclaimspacejobs
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes/finalizers
+          - encryptionkeyrotationcronjobs/finalizers
+          - encryptionkeyrotationjobs/finalizers
+          - networkfences/finalizers
+          - reclaimspacecronjobs/finalizers
+          - reclaimspacejobs/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes/status
+          - encryptionkeyrotationcronjobs/status
+          - encryptionkeyrotationjobs/status
+          - networkfences/status
+          - reclaimspacecronjobs/status
+          - reclaimspacejobs/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - replication.storage.openshift.io
+          resources:
+          - volumegroupreplicationcontents
+          - volumegroupreplications
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - replication.storage.openshift.io
+          resources:
+          - volumegroupreplicationcontents/finalizers
+          - volumegroupreplications/finalizers
+          - volumereplications/finalizers
+          - volumereplications/status
+          verbs:
+          - update
+        - apiGroups:
+          - replication.storage.openshift.io
+          resources:
+          - volumegroupreplicationcontents/status
+          - volumegroupreplications/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - replication.storage.openshift.io
+          resources:
+          - volumereplicationclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - replication.storage.openshift.io
+          resources:
+          - volumereplications
+          verbs:
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: csi-addons-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - admissionregistration.k8s.io
+          resources:
+          - validatingwebhookconfigurations
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - batch
+          resources:
+          - cronjobs
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - config.openshift.io
+          resources:
+          - clusterversions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - console.openshift.io
+          resources:
+          - consoleplugins
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - cephconnections
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofiles
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - drivers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - operatorconfigs
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - prometheusrules
+          verbs:
+          - create
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclaims
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclaims/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclaims/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclients
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclients/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclients/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclusters
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - clusterserviceversions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - subscriptions
+          verbs:
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - quota.openshift.io
+          resources:
+          - clusterresourcequotas
+          verbs:
+          - create
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csidrivers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: ocs-client-operator-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: ocs-client-operator-csi-cephfs-plugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        serviceAccountName: ocs-client-operator-csi-cephfs-provisioner-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: ocs-client-operator-csi-rbd-plugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch"
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: ocs-client-operator-csi-rbd-provisioner-sa
+      - rules:
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclients
+          verbs:
+          - get
+          - list
+          - patch
+        - apiGroups:
+          - ""
+          resourceNames:
+          - ceph-csi-configs
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - update
+        - apiGroups:
+          - config.openshift.io
+          resources:
+          - clusterversions
+          - dnses
+          verbs:
+          - get
+          - list
+        serviceAccountName: ocs-client-operator-status-reporter
+      - rules:
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - create
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          - deployments
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        - apiGroups:
+          - batch
+          resources:
+          - cronjobs
+          - jobs
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephblockpoolradosnamespaces
+          verbs:
+          - '*'
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephblockpools
+          - cephclusters
+          - cephfilesystems
+          - cephnfses
+          - cephobjectstores
+          - cephobjectstoreusers
+          - cephrbdmirrors
+          verbs:
+          - '*'
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclients
+          - cephfilesystemsubvolumegroups
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - cluster.open-cluster-management.io
+          resources:
+          - clusterclaims
+          verbs:
+          - create
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - config.openshift.io
+          resources:
+          - clusterversions
+          - infrastructures
+          - networks
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - console.openshift.io
+          resources:
+          - consolequickstarts
+          verbs:
+          - '*'
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - create
+          - get
+          - list
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - endpoints
+          - events
+          - nodes
+          - persistentvolumeclaims
+          - pods
+          - secrets
+          - serviceaccounts
+          - services
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - '*'
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - k8s.cni.cncf.io
+          resources:
+          - network-attachment-definitions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - alertmanagers
+          - prometheuses
+          - servicemonitors
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - prometheusrules
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - noobaas
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - objectbucketclaims
+          - objectbuckets
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - '*'
+          - storageclusterpeers
+          - storageconsumers
+          - storagerequests
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclusterpeers/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclusterpeers/status
+          - storageconsumers/status
+          - storagerequests/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - ocs.openshift.io
+          resources:
+          - storageclusters
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - clusterserviceversions
+          verbs:
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - operatorconditions
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - quota.openshift.io
+          resources:
+          - clusterresourcequotas
+          verbs:
+          - '*'
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterrolebindings
+          - clusterroles
+          - rolebindings
+          - roles
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - route.openshift.io
+          resources:
+          - routes
+          verbs:
+          - '*'
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - create
+          - get
+          - update
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - privileged
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - create
+          - get
+          - update
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - '*'
+          - create
+          - delete
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - '*'
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - '*'
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - template.openshift.io
+          resources:
+          - templates
+          verbs:
+          - '*'
+        serviceAccountName: ocs-operator
+      - rules:
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: ux-backend-server
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        serviceAccountName: ceph-csi-cephfs-ctrlplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        serviceAccountName: ceph-csi-cephfs-nodeplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - cephconnections
+          verbs:
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofilemappings
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofilemappings/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofilemappings/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofiles
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofiles/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - clientprofiles/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - drivers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - drivers/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - drivers/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - operatorconfigs
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csidrivers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: ceph-csi-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        serviceAccountName: ceph-csi-nfs-ctrlplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: ceph-csi-nfs-nodeplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch"
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: ceph-csi-rbd-ctrlplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: ceph-csi-rbd-nodeplugin-sa
+      - rules:
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - '*'
+          - noobaas
+          - backingstores
+          - bucketclasses
+          - noobaas/finalizers
+          - backingstores/finalizers
+          - bucketclasses/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - secrets
+          - persistentvolumes
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          - services
+          - pods
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        - apiGroups:
+          - admissionregistration.k8s.io
+          resources:
+          - validatingwebhookconfigurations
+          verbs:
+          - get
+          - update
+          - list
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - '*'
+        - apiGroups:
+          - keda.sh
+          resources:
+          - clustertriggerauthentications
+          - scaledobjects
+          - triggerauthentications
+          - scaledjobs
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - prometheuses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterrolebindings
+          verbs:
+          - create
+          - get
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - apiregistration.k8s.io
+          resources:
+          - apiservices
+          verbs:
+          - create
+          - get
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - rolebindings
+          verbs:
+          - create
+          - get
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterroles
+          verbs:
+          - create
+          - get
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - prometheuses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - objectstorage.k8s.io
+          resources:
+          - buckets
+          - bucketaccesses
+          - bucketclaims
+          - bucketaccessclasses
+          - buckets/status
+          - bucketaccesses/status
+          - bucketclaims/status
+          - bucketaccessclasses/status
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        serviceAccountName: noobaa
+      - rules:
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - noobaas
+          - bucketclasses
+          verbs:
+          - get
+          - watch
+          - list
+        serviceAccountName: noobaa-odf-ui
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - nodes
+          - nodes/proxy
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+          - list
+          - get
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: rook-ceph-mgr
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+        serviceAccountName: rook-ceph-osd
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - nodes
+          - nodes/proxy
+          - secrets
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          - persistentvolumes
+          - persistentvolumeclaims
+          - endpoints
+          - services
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - batch
+          resources:
+          - jobs
+          - cronjobs
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - deletecollection
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclients
+          - cephclusters
+          - cephblockpools
+          - cephfilesystems
+          - cephnfses
+          - cephobjectstores
+          - cephobjectstoreusers
+          - cephobjectrealms
+          - cephobjectzonegroups
+          - cephobjectzones
+          - cephbuckettopics
+          - cephbucketnotifications
+          - cephrbdmirrors
+          - cephfilesystemmirrors
+          - cephfilesystemsubvolumegroups
+          - cephblockpoolradosnamespaces
+          - cephcosidrivers
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclients/status
+          - cephclusters/status
+          - cephblockpools/status
+          - cephfilesystems/status
+          - cephnfses/status
+          - cephobjectstores/status
+          - cephobjectstoreusers/status
+          - cephobjectrealms/status
+          - cephobjectzonegroups/status
+          - cephobjectzones/status
+          - cephbuckettopics/status
+          - cephbucketnotifications/status
+          - cephrbdmirrors/status
+          - cephfilesystemmirrors/status
+          - cephfilesystemsubvolumegroups/status
+          - cephblockpoolradosnamespaces/status
+          verbs:
+          - update
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclients/finalizers
+          - cephclusters/finalizers
+          - cephblockpools/finalizers
+          - cephfilesystems/finalizers
+          - cephnfses/finalizers
+          - cephobjectstores/finalizers
+          - cephobjectstoreusers/finalizers
+          - cephobjectrealms/finalizers
+          - cephobjectzonegroups/finalizers
+          - cephobjectzones/finalizers
+          - cephbuckettopics/finalizers
+          - cephbucketnotifications/finalizers
+          - cephrbdmirrors/finalizers
+          - cephfilesystemmirrors/finalizers
+          - cephfilesystemsubvolumegroups/finalizers
+          - cephblockpoolradosnamespaces/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - policy
+          - apps
+          - extensions
+          resources:
+          - poddisruptionbudgets
+          - deployments
+          - replicasets
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - deletecollection
+        - apiGroups:
+          - apps
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - healthchecking.openshift.io
+          resources:
+          - machinedisruptionbudgets
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - machine.openshift.io
+          resources:
+          - machines
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csidrivers
+          verbs:
+          - create
+          - delete
+          - get
+          - update
+        - apiGroups:
+          - k8s.cni.cncf.io
+          resources:
+          - network-attachment-definitions
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          - configmaps
+          verbs:
+          - get
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - objectbucketclaims
+          verbs:
+          - list
+          - watch
+          - get
+          - update
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - objectbuckets
+          verbs:
+          - list
+          - watch
+          - get
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - objectbucketclaims/status
+          - objectbuckets/status
+          verbs:
+          - update
+        - apiGroups:
+          - objectbucket.io
+          resources:
+          - objectbucketclaims/finalizers
+          - objectbuckets/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - pods/log
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - pods/exec
+          verbs:
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - networkfences
+          verbs:
+          - create
+          - get
+          - update
+          - delete
+          - watch
+          - list
+          - deletecollection
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - get
+        serviceAccountName: rook-ceph-system
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        serviceAccountName: rook-csi-cephfs-plugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+          - create
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+          - create
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        serviceAccountName: rook-csi-cephfs-provisioner-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: rook-csi-nfs-plugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        serviceAccountName: rook-csi-nfs-provisioner-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+        serviceAccountName: rook-csi-rbd-plugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - list
+          - watch
+          - create
+          - update
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - volumeattachments/status
+          verbs:
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims/status
+          verbs:
+          - patch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+          - create
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - update
+          - create
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+          - patch
+        - apiGroups:
+          - groupsnapshot.storage.k8s.io
+          resources:
+          - volumegroupsnapshotcontents/status
+          verbs:
+          - update
+          - patch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - serviceaccounts/token
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - csinodes
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: rook-csi-rbd-provisioner-sa
+      - rules:
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - privileged
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: rook-ceph-system
+      deployments:
+      - label:
+          app.kubernetes.io/managed-by: kustomize
+          app.kubernetes.io/name: odf-operator
+          control-plane: controller-manager
+        name: odf-operator-controller-manager
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              control-plane: controller-manager
+          strategy: {}
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: manager
+              creationTimestamp: null
+              labels:
+                control-plane: controller-manager
+            spec:
+              containers:
+              - args:
+                - --secure-listen-address=0.0.0.0:8443
+                - --upstream=http://127.0.0.1:8080/
+                - --logtostderr=true
+                - --v=0
+                image: gcr.io/kubebuilder/kube-rbac-proxy:v0.16.0
+                name: kube-rbac-proxy
+                ports:
+                - containerPort: 8443
+                  name: https
+                  protocol: TCP
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 5m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+              - args:
+                - --health-probe-bind-address=:8081
+                - --metrics-bind-address=127.0.0.1:8080
+                - --leader-elect
+                command:
+                - /manager
+                image: controller:latest
+                livenessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                name: manager
+                readinessProbe:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 10m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+              securityContext:
+                runAsNonRoot: true
+              serviceAccountName: odf-operator-controller-manager
+              terminationGracePeriodSeconds: 10
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: odf-operator-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          - endpoints
+          - pods
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - extensions
+          resources:
+          - ingresses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - networking.k8s.io
+          resources:
+          - ingresses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        serviceAccountName: prometheus-k8s
+      - rules:
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - alertmanagers
+          - alertmanagers/status
+          - alertmanagers/finalizers
+          - alertmanagerconfigs
+          - prometheuses
+          - prometheuses/status
+          - prometheuses/finalizers
+          - thanosrulers
+          - thanosrulers/finalizers
+          - servicemonitors
+          - podmonitors
+          - probes
+          - prometheusrules
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          verbs:
+          - list
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          - services/finalizers
+          - endpoints
+          verbs:
+          - get
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - nodes
+          verbs:
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - networking.k8s.io
+          resources:
+          - ingresses
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: prometheus-operator
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: csi-addons-controller-manager
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: ocs-client-operator-controller-manager
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        serviceAccountName: ocs-client-operator-csi-cephfs-provisioner-sa
+      - rules:
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: ocs-client-operator-csi-rbd-plugin-sa
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: ocs-client-operator-csi-rbd-provisioner-sa
+      - rules:
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - clusterserviceversions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - csi.ceph.io
+          resources:
+          - cephconnections
+          verbs:
+          - get
+          - patch
+        serviceAccountName: ocs-client-operator-status-reporter
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: ceph-csi-cephfs-ctrlplugin-sa
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: ceph-csi-controller-manager
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: ceph-csi-rbd-ctrlplugin-sa
+      - rules:
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: ceph-csi-rbd-nodeplugin-sa
+      - rules:
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - noobaa
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          - serviceaccounts
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          - prometheusrules
+          verbs:
+          - get
+          - create
+          - update
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - services/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - apps
+          resourceNames:
+          - noobaa-operator
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - cloudcredential.openshift.io
+          resources:
+          - credentialsrequests
+          verbs:
+          - get
+          - create
+          - update
+          - list
+          - watch
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephobjectstores
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephobjectstoreusers
+          verbs:
+          - get
+          - create
+          - update
+          - list
+          - watch
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclusters
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - route.openshift.io
+          resources:
+          - routes
+          verbs:
+          - get
+          - create
+          - update
+          - list
+          - watch
+        - apiGroups:
+          - autoscaling
+          resources:
+          - horizontalpodautoscalers
+          verbs:
+          - get
+          - create
+          - update
+          - patch
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - batch
+          resources:
+          - jobs
+          verbs:
+          - get
+          - create
+          - update
+          - patch
+          - list
+          - watch
+          - delete
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: noobaa
+      - rules:
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - '*'
+          - noobaas
+          - backingstores
+          - bucketclasses
+          - noobaas/finalizers
+          - backingstores/finalizers
+          - bucketclasses/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          - serviceaccounts
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - noobaa-endpoint
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: noobaa-endpoint
+      - rules:
+        - apiGroups:
+          - noobaa.io
+          resources:
+          - '*'
+          - noobaas
+          - backingstores
+          - bucketclasses
+          - noobaas/finalizers
+          - backingstores/finalizers
+          - bucketclasses/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          - serviceaccounts
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - noobaa-core
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: noobaa-core
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        serviceAccountName: rook-ceph-cmd-reporter
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - ""
+          verbs:
+          - ""
+        serviceAccountName: rook-ceph-default
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - pods/log
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - batch
+          resources:
+          - jobs
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclients
+          - cephclusters
+          - cephblockpools
+          - cephfilesystems
+          - cephnfses
+          - cephobjectstores
+          - cephobjectstoreusers
+          - cephobjectrealms
+          - cephobjectzonegroups
+          - cephobjectzones
+          - cephbuckettopics
+          - cephbucketnotifications
+          - cephrbdmirrors
+          - cephfilesystemmirrors
+          - cephfilesystemsubvolumegroups
+          - cephblockpoolradosnamespaces
+          - cephcosidrivers
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - patch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments/scale
+          - deployments
+          verbs:
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+        serviceAccountName: rook-ceph-mgr
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - secrets
+          verbs:
+          - get
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ceph.rook.io
+          resources:
+          - cephclusters
+          - cephclusters/finalizers
+          verbs:
+          - get
+          - list
+          - create
+          - update
+          - delete
+        serviceAccountName: rook-ceph-osd
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - get
+          - delete
+        - apiGroups:
+          - batch
+          resources:
+          - jobs
+          verbs:
+          - get
+          - list
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - update
+          - delete
+          - list
+        serviceAccountName: rook-ceph-purge-osd
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+        serviceAccountName: rook-ceph-rgw
+      - rules:
+        - apiGroups:
+          - ""
+          - apps
+          - extensions
+          resources:
+          - secrets
+          - pods
+          - pods/log
+          - services
+          - configmaps
+          - deployments
+          - daemonsets
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - configmaps
+          - services
+          verbs:
+          - get
+          - list
+          - watch
+          - patch
+          - create
+          - update
+          - delete
+        - apiGroups:
+          - apps
+          - extensions
+          resources:
+          - daemonsets
+          - statefulsets
+          - deployments
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - delete
+          - deletecollection
+        - apiGroups:
+          - batch
+          resources:
+          - cronjobs
+          verbs:
+          - delete
+        - apiGroups:
+          - cert-manager.io
+          resources:
+          - certificates
+          - issuers
+          verbs:
+          - get
+          - create
+          - delete
+        - apiGroups:
+          - multicluster.x-k8s.io
+          resources:
+          - serviceexports
+          verbs:
+          - get
+          - create
+        serviceAccountName: rook-ceph-system
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: rook-csi-cephfs-provisioner-sa
+      - rules:
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: rook-csi-rbd-plugin-sa
+      - rules:
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - watch
+          - list
+          - delete
+          - update
+          - create
+        - apiGroups:
+          - csiaddons.openshift.io
+          resources:
+          - csiaddonsnodes
+          verbs:
+          - create
+        serviceAccountName: rook-csi-rbd-provisioner-sa
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: false
+    type: AllNamespaces
+  keywords:
+  - operator
+  - data
+  - storage
+  links:
+  - name: Source Code
+    url: https://github.com/red-hat-storage/odf-operator
+  maintainers:
+  - email: ocs-support@redhat.com
+    name: Red Hat Support
+  maturity: alpha
+  minKubeVersion: 1.16.0
+  provider:
+    name: Red Hat
+  version: 0.0.1
+status:
+  cleanup: {}

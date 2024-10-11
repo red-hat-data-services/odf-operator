@@ -1,0 +1,72 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "ramendr.openshift.io/v1alpha1",
+          "kind": "Recipe",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/created-by": "recipe",
+              "app.kubernetes.io/instance": "recipe-sample",
+              "app.kubernetes.io/managed-by": "kustomize",
+              "app.kubernetes.io/name": "recipe",
+              "app.kubernetes.io/part-of": "recipe"
+            },
+            "name": "recipe-sample"
+          },
+          "spec": null
+        }
+      ]
+    capabilities: Basic Install
+    createdAt: "2024-05-28T16:06:10Z"
+    olm.skipRange: ""
+    operators.operatorframework.io/builder: operator-sdk-v1.31.0
+    operators.operatorframework.io/operator-type: non-standalone
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+  name: recipe.v0.0.1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: Recipe is the Schema for the recipes API
+      displayName: Recipe
+      kind: Recipe
+      name: recipes.ramendr.openshift.io
+      version: v1alpha1
+  description: |
+    Recipe describes a workflow used for capturing or recovering Kubernetes resources. This can be referred to by a Ramen DRPlacementControl object when kubeObjectProtection is enabled.
+  displayName: Recipe
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: []
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: false
+    type: AllNamespaces
+  keywords:
+  - recipe
+  links:
+  - name: Recipe
+    url: https://github.com/ramendr/recipe
+  maintainers:
+  - email: bmekhiss@redhat.com
+    name: Benamar Mekhissi
+  - email: srangana@redhat.com
+    name: Shyam Ranganathan
+  maturity: alpha
+  provider:
+    name: Red Hat, Inc.
+  version: 0.0.1

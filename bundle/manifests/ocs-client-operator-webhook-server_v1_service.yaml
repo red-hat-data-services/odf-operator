@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: webhook-cert-secret
+  creationTimestamp: null
+  name: ocs-client-operator-webhook-server
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 7443
+  selector:
+    app: ocs-client-operator
+  type: ClusterIP
+status:
+  loadBalancer: {}
