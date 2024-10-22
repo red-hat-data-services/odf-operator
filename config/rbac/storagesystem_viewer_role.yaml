@@ -1,0 +1,23 @@
+# permissions for end users to view storagesystems.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: odf-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: storagesystem-viewer-role
+rules:
+- apiGroups:
+  - odf.openshift.io
+  resources:
+  - storagesystems
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - odf.openshift.io
+  resources:
+  - storagesystems/status
+  verbs:
+  - get

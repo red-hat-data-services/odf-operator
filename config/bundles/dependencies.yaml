@@ -1,0 +1,29 @@
+dependencies:
+- type: olm.package
+  value:
+    packageName: ocs-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: rook-ceph-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: ocs-client-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: mcg-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: odf-csi-addons-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: odf-prometheus-operator
+    version: ">=4.16.0 <=4.17.0"
+- type: olm.package
+  value:
+    packageName: recipe
+    version: ">=4.16.0 <=4.17.0"

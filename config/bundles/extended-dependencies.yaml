@@ -1,0 +1,4 @@
+- type: olm.package
+  value:
+    packageName: ibm-storage-odf-operator
+    version: "1.6.0"
