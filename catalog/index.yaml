@@ -76,15 +76,15 @@ entries:
   - name: cephcsi-operator.v4.18.0
 
 ---
-defaultChannel: stable-v1.6
+defaultChannel: stable-v1.7
 name: ibm-storage-odf-operator
 schema: olm.package
 ---
 schema: olm.channel
 package: ibm-storage-odf-operator
-name: stable-v1.6
+name: stable-v1.7
 entries:
-  - name: ibm-storage-odf-operator.v1.6.0
+  - name: ibm-storage-odf-operator.v1.7.0
 
 ---
 defaultChannel: alpha
