@@ -45,9 +45,11 @@ import (
 
 // SubscriptionReconciler reconciles a Subscription object
 type SubscriptionReconciler struct {
-	client.Client
+	ctx               context.Context
+	Client            client.Client
 	Scheme            *runtime.Scheme
 	Recorder          *EventReporter
+	OperatorNamespace string
 	ConditionName     string
 	OperatorCondition conditions.Condition
 }
@@ -76,12 +78,17 @@ func (r *SubscriptionReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		return ctrl.Result{}, err
 	}
 
-	err = r.setOperatorCondition(logger, req.NamespacedName.Namespace)
+	err = r.setOperatorCondition(logger)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
 
-	err = r.ensureSubscriptions(logger, req.NamespacedName.Namespace)
+	err = ensureWebhook(r.ctx, r.Client, logger, r.OperatorNamespace)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	err = r.ensureSubscriptions(logger)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -89,7 +96,7 @@ func (r *SubscriptionReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	return ctrl.Result{}, nil
 }
 
-func (r *SubscriptionReconciler) ensureSubscriptions(logger logr.Logger, namespace string) error {
+func (r *SubscriptionReconciler) ensureSubscriptions(logger logr.Logger) error {
 
 	var err error
 
@@ -97,7 +104,7 @@ func (r *SubscriptionReconciler) ensureSubscriptions(logger logr.Logger, namespa
 	subsList[StorageClusterKind] = GetSubscriptions(StorageClusterKind)
 
 	ssList := &odfv1alpha1.StorageSystemList{}
-	err = r.Client.List(context.TODO(), ssList, &client.ListOptions{Namespace: namespace})
+	err = r.Client.List(context.TODO(), ssList, &client.ListOptions{Namespace: r.OperatorNamespace})
 	if err != nil {
 		return err
 	}
@@ -138,9 +145,9 @@ func (r *SubscriptionReconciler) ensureSubscriptions(logger logr.Logger, namespa
 	return err
 }
 
-func (r *SubscriptionReconciler) setOperatorCondition(logger logr.Logger, namespace string) error {
+func (r *SubscriptionReconciler) setOperatorCondition(logger logr.Logger) error {
 	ocdList := &operatorv2.OperatorConditionList{}
-	err := r.Client.List(context.TODO(), ocdList, client.InNamespace(namespace))
+	err := r.Client.List(context.TODO(), ocdList, client.InNamespace(r.OperatorNamespace))
 	if err != nil {
 		logger.Error(err, "failed to list OperatorConditions")
 		return err
@@ -292,6 +299,13 @@ func (r *SubscriptionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	)
 
 	err := mgr.Add(manager.RunnableFunc(func(ctx context.Context) error {
+
+		logger := log.FromContext(ctx)
+		err := ensureWebhook(ctx, r.Client, logger, r.OperatorNamespace)
+		if err != nil {
+			return err
+		}
+
 		odfDepsSub := GetStorageClusterSubscriptions()[0]
 		return EnsureDesiredSubscription(r.Client, odfDepsSub)
 	}))
