@@ -63,7 +63,7 @@ func TestEnsureQuickStarts(t *testing.T) {
 	}
 
 	fakeReconciler := GetFakeStorageSystemReconciler(t)
-	err := fakeReconciler.ensureQuickStarts(fakeReconciler.Log)
+	err := fakeReconciler.ensureQuickStarts(fakeLogger)
 	assert.NoError(t, err)
 	for _, c := range cases {
 		qs := consolev1.ConsoleQuickStart{}
@@ -143,7 +143,7 @@ func TestDeleteQuickStarts(t *testing.T) {
 
 		fakeReconciler := GetFakeStorageSystemReconciler(t)
 
-		err := fakeReconciler.ensureQuickStarts(fakeReconciler.Log)
+		err := fakeReconciler.ensureQuickStarts(fakeLogger)
 		assert.NoError(t, err)
 
 		var quickstarts []consolev1.ConsoleQuickStart = getActualQuickStarts(t, cases, fakeReconciler)
@@ -156,7 +156,7 @@ func TestDeleteQuickStarts(t *testing.T) {
 		for i := range tc.deleteStorageSystems {
 			err := fakeReconciler.Client.Delete(context.TODO(), &tc.deleteStorageSystems[i])
 			assert.NoError(t, err)
-			err = fakeReconciler.deleteResources(&tc.deleteStorageSystems[i], fakeReconciler.Log)
+			err = fakeReconciler.deleteResources(&tc.deleteStorageSystems[i], fakeLogger)
 			assert.NoError(t, err)
 		}
 		quickstarts = getActualQuickStarts(t, cases, fakeReconciler)
