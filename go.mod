@@ -113,6 +113,8 @@ require (
 
 replace github.com/portworx/sched-ops => github.com/portworx/sched-ops v0.20.4-openstorage-rc3 // required by rook v1.7
 
+replace go.opencensus.io => github.com/census-instrumentation/opencensus-go v0.23.0
+
 exclude (
 	// This tag doesn't exist, but is imported by github.com/portworx/sched-ops.
 	github.com/kubernetes-incubator/external-storage v0.20.4-openstorage-rc2

@@ -1,5 +1,5 @@
 # The base image which contain rm and sed command
-FROM cirros as builder
+FROM cirros AS builder
 
 # Copy catalog files
 COPY catalog /configs
