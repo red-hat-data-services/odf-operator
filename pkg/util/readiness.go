@@ -17,6 +17,7 @@ limitations under the License.
 package util
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -26,15 +27,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 )
 
-func CheckCSVPhase(c client.Client, namespace string, csvNames ...string) healthz.Checker {
+func CheckCSVPhase(cli client.Client, namespace string, csvNames ...string) healthz.Checker {
 
-	csvMap := map[string]struct{}{}
-	for _, name := range csvNames {
-		csvMap[name] = struct{}{}
-	}
 	return func(r *http.Request) error {
-		csvList := &opv1a1.ClusterServiceVersionList{}
-		if err := c.List(r.Context(), csvList, client.InNamespace(namespace)); err != nil {
+
+		csvList, err := GetNamespaceCSVs(r.Context(), cli, namespace)
+		if err != nil {
 			return err
 		}
 
@@ -45,24 +43,51 @@ func CheckCSVPhase(c client.Client, namespace string, csvNames ...string) health
 			return nil
 		}
 
-		for idx := range csvList.Items {
-			csv := &csvList.Items[idx]
-			_, exists := csvMap[csv.Name]
-			if exists {
-				if csv.Status.Phase != opv1a1.CSVPhaseSucceeded {
-					return fmt.Errorf("CSV %s is not in Succeeded phase", csv.Name)
-				} else if csv.Status.Phase == opv1a1.CSVPhaseSucceeded {
-					delete(csvMap, csv.Name)
-				}
-			}
-		}
-		if len(csvMap) != 0 {
-			for csvName := range csvMap {
-				return fmt.Errorf("CSV %s is not found", csvName)
-			}
-		}
-		return nil
+		return validateCSVsSucceeded(csvList, csvNames...)
 	}
+}
+
+func validateCSVsSucceeded(csvList *opv1a1.ClusterServiceVersionList, csvsToBeSucceeded ...string) error {
+
+	for _, csvName := range csvsToBeSucceeded {
+		csv, found := getCSVByName(csvList, csvName)
+		if !found {
+			return fmt.Errorf("CSV %q not found in the list", csvName)
+		}
+
+		if csv.Status.Phase != opv1a1.CSVPhaseSucceeded {
+			return fmt.Errorf("CSV %q is not in the Succeeded phase; current phase: %s", csv.Name, csv.Status.Phase)
+		}
+	}
+	return nil
+}
+
+func ValidateCSVsPresent(csvList *opv1a1.ClusterServiceVersionList, csvsToBePresent ...string) error {
+
+	for _, csvName := range csvsToBePresent {
+		_, found := getCSVByName(csvList, csvName)
+		if !found {
+			return fmt.Errorf("CSV %q not found in the list", csvName)
+		}
+	}
+	return nil
+}
+
+func getCSVByName(csvList *opv1a1.ClusterServiceVersionList, name string) (*opv1a1.ClusterServiceVersion, bool) {
+
+	for i := range csvList.Items {
+		if csvList.Items[i].Name == name {
+			return &csvList.Items[i], true
+		}
+	}
+	return nil, false
+}
+
+func GetNamespaceCSVs(ctx context.Context, cli client.Client, namespace string) (*opv1a1.ClusterServiceVersionList, error) {
+
+	csvList := &opv1a1.ClusterServiceVersionList{}
+	err := cli.List(ctx, csvList, client.InNamespace(namespace))
+	return csvList, err
 }
 
 func AreMultipleOdfOperatorCsvsPresent(csvs *opv1a1.ClusterServiceVersionList) bool {

@@ -116,10 +116,10 @@ func main() {
 	}
 
 	storageSystemReconciler := &controllers.StorageSystemReconciler{
-		Client:   mgr.GetClient(),
-		Log:      ctrl.Log.WithName("controllers").WithName("StorageSystem"),
-		Scheme:   mgr.GetScheme(),
-		Recorder: controllers.NewEventReporter(mgr.GetEventRecorderFor("StorageSystem controller")),
+		Client:            mgr.GetClient(),
+		Scheme:            mgr.GetScheme(),
+		Recorder:          controllers.NewEventReporter(mgr.GetEventRecorderFor("StorageSystem controller")),
+		OperatorNamespace: operatorNamespace,
 	}
 	if err = storageSystemReconciler.SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "StorageSystem")
@@ -139,6 +139,7 @@ func main() {
 	subscriptionReconciler := &controllers.SubscriptionReconciler{
 		Client:            mgr.GetClient(),
 		Scheme:            mgr.GetScheme(),
+		OperatorNamespace: operatorNamespace,
 		ConditionName:     conditionName,
 		OperatorCondition: condition,
 	}
@@ -158,9 +159,10 @@ func main() {
 	}
 
 	if err = (&controllers.ClusterVersionReconciler{
-		Client:      mgr.GetClient(),
-		Scheme:      mgr.GetScheme(),
-		ConsolePort: odfConsolePort,
+		Client:            mgr.GetClient(),
+		Scheme:            mgr.GetScheme(),
+		ConsolePort:       odfConsolePort,
+		OperatorNamespace: operatorNamespace,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ClusterVersion")
 		os.Exit(1)
@@ -176,17 +178,12 @@ func main() {
 	// can't check for only odf-dependencies CSV as OLM doesn't guarantee
 	// (based on observations) existence of all CRDs brought by OLM dependency
 	// mechanism.
-	csvsToBeSuceeded := []string{
-		controllers.OcsSubscriptionStartingCSV,
-		controllers.RookSubscriptionStartingCSV,
-		controllers.NoobaaSubscriptionStartingCSV,
-	}
 	if err := mgr.AddReadyzCheck(
 		"readyz",
 		util.CheckCSVPhase(
 			mgr.GetClient(),
 			operatorNamespace,
-			csvsToBeSuceeded...,
+			controllers.EssentialCSVs...,
 		),
 	); err != nil {
 		setupLog.Error(err, "unable to set up ready check")

@@ -618,6 +618,8 @@ func GetStorageClusterSubscriptions() []*operatorv1alpha1.Subscription {
 		},
 	}
 
+	// Do not change the inxex of odfDepsSubscription. The 0 index is being used to create this subscription
+	// while starting in the subscription controller in SetupWithManager.
 	return []*operatorv1alpha1.Subscription{odfDepsSubscription, ocsSubscription, rookSubscription, noobaaSubscription,
 		csiAddonsSubscription, cephCsiSubscription, ocsClientSubscription, prometheusSubscription, recipeSubscription}
 }

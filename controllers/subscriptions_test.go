@@ -30,6 +30,13 @@ import (
 	odfv1alpha1 "github.com/red-hat-storage/odf-operator/api/v1alpha1"
 )
 
+func TestSubscriptionIndex(t *testing.T) {
+	odfDepsSub := GetStorageClusterSubscriptions()[0]
+	msg := "odfDepsSub variable is expected to contain the 'odf-dependencies' subscription. " +
+		"Ensure the 'odf-dependencies' subscription indexed at 0."
+	assert.Equal(t, OdfDepsSubscriptionPackage, odfDepsSub.Spec.Package, msg)
+}
+
 func TestEnsureSubscription(t *testing.T) {
 
 	testCases := []struct {
@@ -92,7 +99,7 @@ func TestEnsureSubscription(t *testing.T) {
 			err = fakeReconciler.Client.Create(context.TODO(), odfSub)
 			assert.NoError(t, err)
 
-			err = fakeReconciler.ensureSubscriptions(fakeStorageSystem, fakeReconciler.Log)
+			err = fakeReconciler.ensureSubscriptions(fakeStorageSystem, fakeLogger)
 			assert.NoError(t, err)
 
 			for _, expectedSubscription := range subs {

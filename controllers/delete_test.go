@@ -87,7 +87,7 @@ func TestDeleteResources(t *testing.T) {
 			assert.NoError(t, err)
 		}
 
-		err = fakeReconciler.deleteResources(fakeStorageSystem, fakeReconciler.Log)
+		err = fakeReconciler.deleteResources(fakeStorageSystem, fakeLogger)
 		assert.True(t, (tc.expectedError == (err != nil)))
 
 		// verify resource does not exist

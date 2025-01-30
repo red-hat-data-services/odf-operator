@@ -34,6 +34,10 @@ import (
 	odfv1alpha1 "github.com/red-hat-storage/odf-operator/api/v1alpha1"
 )
 
+var (
+	fakeLogger = ctrl.Log.WithName("test-controllers").WithName("StorageSystem")
+)
+
 func GetFakeStorageSystem(kind odfv1alpha1.StorageKind) *odfv1alpha1.StorageSystem {
 	return &odfv1alpha1.StorageSystem{
 		ObjectMeta: metav1.ObjectMeta{
@@ -53,7 +57,6 @@ func GetFakeStorageSystemReconciler(t *testing.T, objs ...runtime.Object) *Stora
 	scheme := createFakeScheme(t)
 	fakeStorageSystemReconciler := &StorageSystemReconciler{
 		Client:   fake.NewClientBuilder().WithScheme(scheme).WithRuntimeObjects(objs...).Build(),
-		Log:      ctrl.Log.WithName("controllers").WithName("StorageSystem"),
 		Scheme:   scheme,
 		Recorder: NewEventReporter(record.NewFakeRecorder(1024)),
 	}

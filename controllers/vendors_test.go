@@ -66,7 +66,7 @@ func TestIsVendorSystemPresent(t *testing.T) {
 			assert.NoError(t, err)
 		}
 
-		err := fakeReconciler.isVendorSystemPresent(fakeStorageSystem, fakeReconciler.Log)
+		err := fakeReconciler.isVendorSystemPresent(fakeStorageSystem, fakeLogger)
 
 		assert.Equal(t, tc.hasBackEndStorage,
 			conditionsv1.IsStatusConditionTrue(

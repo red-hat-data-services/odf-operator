@@ -30,6 +30,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
@@ -46,10 +47,11 @@ const (
 
 // StorageSystemReconciler reconciles a StorageSystem object
 type StorageSystemReconciler struct {
-	client.Client
-	Log      logr.Logger
-	Scheme   *runtime.Scheme
-	Recorder *EventReporter
+	ctx               context.Context
+	Client            client.Client
+	Scheme            *runtime.Scheme
+	Recorder          *EventReporter
+	OperatorNamespace string
 }
 
 //+kubebuilder:rbac:groups=odf.openshift.io,resources=storagesystems,verbs=get;list;watch;create;update;patch;delete
@@ -68,7 +70,7 @@ type StorageSystemReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
 func (r *StorageSystemReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logger := r.Log.WithValues("instance", req.NamespacedName)
+	logger := log.FromContext(ctx)
 
 	instance := &odfv1alpha1.StorageSystem{}
 	err := r.Client.Get(context.TODO(), req.NamespacedName, instance)
@@ -152,6 +154,11 @@ func (r *StorageSystemReconciler) reconcile(instance *odfv1alpha1.StorageSystem,
 	}
 
 	err = r.ensureQuickStarts(logger)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	err = ensureWebhook(r.ctx, r.Client, logger, r.OperatorNamespace)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
