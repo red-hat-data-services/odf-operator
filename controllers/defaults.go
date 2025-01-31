@@ -172,6 +172,14 @@ const (
 	OdfSubscriptionPackage = "odf-operator"
 )
 
+var (
+	EssentialCSVs = []string{
+		OcsSubscriptionStartingCSV,
+		RookSubscriptionStartingCSV,
+		NoobaaSubscriptionStartingCSV,
+	}
+)
+
 func GetEnvOrDefault(env string) string {
 	if val := os.Getenv(env); val != "" {
 		return val

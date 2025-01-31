@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"time"
 
 	configv1 "github.com/openshift/api/config/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -37,8 +38,9 @@ import (
 // ClusterVersionReconciler reconciles a ClusterVersion object
 type ClusterVersionReconciler struct {
 	client.Client
-	Scheme      *runtime.Scheme
-	ConsolePort int
+	Scheme            *runtime.Scheme
+	ConsolePort       int
+	OperatorNamespace string
 }
 
 //+kubebuilder:rbac:groups=config.openshift.io,resources=clusterversions,verbs=get;list;watch;create;update;patch;delete
@@ -58,7 +60,28 @@ func (r *ClusterVersionReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	if err := r.Client.Get(context.TODO(), req.NamespacedName, &instance); err != nil {
 		return ctrl.Result{}, err
 	}
-	if err := r.ensureConsolePlugin(instance.Status.Desired.Version); err != nil {
+
+	if err := r.ensureOdfConsoleConfigMapAndService(); err != nil {
+		logger.Error(err, "Could not ensure configmap and service for odf-console deployment")
+		return ctrl.Result{}, err
+	}
+
+	csvList, err := util.GetNamespaceCSVs(ctx, r.Client, r.OperatorNamespace)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Check if it is upgrade from 4.17 to 4.18
+	// The new CSVs won't exists while upgrading
+	// They will exists only after new operator has created a new subscription
+	if !util.AreMultipleOdfOperatorCsvsPresent(csvList) {
+		if err := util.ValidateCSVsPresent(csvList, EssentialCSVs...); err != nil {
+			logger.Error(err, "Could not ensure CSVs presence")
+			return ctrl.Result{Requeue: true, RequeueAfter: time.Second * 2}, nil
+		}
+	}
+
+	if err := r.ensureConsolePluginAndCLIDownload(instance.Status.Desired.Version); err != nil {
 		logger.Error(err, "Could not ensure compatibility for ODF consolePlugin")
 		return ctrl.Result{}, err
 	}
@@ -69,12 +92,7 @@ func (r *ClusterVersionReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 // SetupWithManager sets up the controller with the Manager.
 func (r *ClusterVersionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	err := mgr.Add(manager.RunnableFunc(func(context.Context) error {
-		clusterVersion, err := util.DetermineOpenShiftVersion(r.Client)
-		if err != nil {
-			return err
-		}
-
-		return r.ensureConsolePlugin(clusterVersion)
+		return r.ensureOdfConsoleConfigMapAndService()
 	}))
 	if err != nil {
 		return err
@@ -85,14 +103,9 @@ func (r *ClusterVersionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r)
 }
 
-func (r *ClusterVersionReconciler) ensureConsolePlugin(clusterVersion string) error {
+func (r *ClusterVersionReconciler) ensureOdfConsoleConfigMapAndService() error {
 	logger := log.FromContext(context.TODO())
-	// The base path to where the request are sent
-	basePath := console.GetBasePath(clusterVersion)
 	nginxConf := console.NginxConf
-
-	// Customer portal link (CLI Tool download)
-	portalLink := console.CUSTOMER_PORTAL_LINK
 
 	// Get ODF console Deployment
 	odfConsoleDeployment := console.GetDeployment(OperatorNamespace)
@@ -126,9 +139,19 @@ func (r *ClusterVersionReconciler) ensureConsolePlugin(clusterVersion string) er
 		return err
 	}
 
+	return nil
+}
+
+func (r *ClusterVersionReconciler) ensureConsolePluginAndCLIDownload(clusterVersion string) error {
+	logger := log.FromContext(context.TODO())
+	// The base path to where the request are sent
+	basePath := console.GetBasePath(clusterVersion)
+	// Customer portal link (CLI Tool download)
+	portalLink := console.CUSTOMER_PORTAL_LINK
+
 	// Create/Update ODF console ConsolePlugin
 	odfConsolePlugin := console.GetConsolePluginCR(r.ConsolePort, OperatorNamespace)
-	_, err = controllerutil.CreateOrUpdate(context.TODO(), r.Client, odfConsolePlugin, func() error {
+	_, err := controllerutil.CreateOrUpdate(context.TODO(), r.Client, odfConsolePlugin, func() error {
 		if odfConsolePlugin.Spec.Backend.Service != nil {
 			if currentBasePath := odfConsolePlugin.Spec.Backend.Service.BasePath; currentBasePath != basePath {
 				logger.Info(fmt.Sprintf("Set the BasePath for odf-console plugin as '%s'", basePath))

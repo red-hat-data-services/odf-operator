@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
@@ -289,6 +290,14 @@ func (r *SubscriptionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			return []reconcile.Request{{NamespacedName: types.NamespacedName{Name: sub.Name, Namespace: sub.Namespace}}}
 		},
 	)
+
+	err := mgr.Add(manager.RunnableFunc(func(ctx context.Context) error {
+		odfDepsSub := GetStorageClusterSubscriptions()[0]
+		return EnsureDesiredSubscription(r.Client, odfDepsSub)
+	}))
+	if err != nil {
+		return err
+	}
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&operatorv1alpha1.Subscription{},
