@@ -51,6 +51,14 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - ceph.rook.io
+  resources:
+  - cephclusters
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - config.openshift.io
   resources:
   - clusterversions
@@ -95,6 +103,14 @@ rules:
   - get
   - list
   - update
+- apiGroups:
+  - noobaa.io
+  resources:
+  - noobaas
+  verbs:
+  - get
+  - list
+  - watch
 - apiGroups:
   - ocs.openshift.io
   resources:
